@@ -26,29 +26,29 @@ Globals:
     Timeout: 30
     MemorySize: 128
 Resources:
-  appMetaFunction:
+  AppMetaFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/meta.get_meta
-      Description: A function that gets app meta
-      Role: arn:aws:iam::656384094245:role/isen-admin
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /meta
-            Method: GET
-      CodeUri: s3://zvissh-us-east-1/v16/ceadd3ef5adcee6891fc5884973e78f0
-  appMetaFunction2:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/meta.get_meta2
       Description: A function that gets app meta
       Role: '{{resolve:ssm:/vda/iam/lambdarole:1}}'
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /meta2
+            Path: /meta
             Method: GET
-      CodeUri: s3://zvissh-us-east-1/v16/ceadd3ef5adcee6891fc5884973e78f0
+      CodeUri: s3://zvissh-us-east-1/v21/29ce42ba76300c9ea098ef0f570204f1
+  GetS3PresignedUrl:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/meta.get_s3_upload_ps_url
+      Description: A function that gets app meta
+      Role: '{{resolve:ssm:/vda/iam/lambdarole:1}}'
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /s3ps
+            Method: GET
+      CodeUri: s3://zvissh-us-east-1/v21/29ce42ba76300c9ea098ef0f570204f1

@@ -28,7 +28,7 @@ Globals:
     MemorySize: 128
 
 Resources:
-  appMetaFunction:
+  AppMetaFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/meta.get_meta
@@ -40,15 +40,15 @@ Resources:
           Properties:
             Path: /meta
             Method: GET
-  appMetaFunction2:
+  GetS3PresignedUrl:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/meta.get_meta2
+      Handler: src/meta.get_s3_upload_ps_url
       Description: A function that gets app meta
       Role: '{{resolve:ssm:/vda/iam/lambdarole:1}}'
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /meta2
+            Path: /s3ps
             Method: GET            
