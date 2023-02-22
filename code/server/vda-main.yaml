@@ -1,0 +1,54 @@
+Transform: AWS::Serverless-2016-10-31
+Description: Vehicle detection mlops backend
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+    Auth:
+      AddDefaultAuthorizerToCorsPreflight: false
+    GatewayResponses:
+      DEFAULT_4XX:
+        ResponseParameters:
+          Headers:
+            Access-Control-Allow-Origin: "'*'"
+            Access-Control-Allow-Methods: "'OPTIONS,GET,PUT'"
+            Access-Control-Allow-Headers: "'Content-Type,Authorization'"
+      DEFAULT_5XX:
+        ResponseParameters:
+          Headers:
+            Access-Control-Allow-Origin: "'*'"
+            Access-Control-Allow-Methods: "'OPTIONS,GET,PUT'"
+            Access-Control-Allow-Headers: "'Content-Type,Authorization'"
+  Function:
+    Runtime: python3.8
+    Timeout: 30
+    MemorySize: 128
+Resources:
+  appMetaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/meta.get_meta
+      Description: A function that gets app meta
+      Role: arn:aws:iam::656384094245:role/isen-admin
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /meta
+            Method: GET
+      CodeUri: s3://zvissh-us-east-1/v16/ceadd3ef5adcee6891fc5884973e78f0
+  appMetaFunction2:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/meta.get_meta2
+      Description: A function that gets app meta
+      Role: '{{resolve:ssm:/vda/iam/lambdarole:1}}'
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /meta2
+            Method: GET
+      CodeUri: s3://zvissh-us-east-1/v16/ceadd3ef5adcee6891fc5884973e78f0
